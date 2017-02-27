@@ -1,0 +1,26 @@
+<% content_for(:title, "Shoes") %>
+<a href="/dashboard/<%= @user.id %>">Go to Dashboard</a>  <a data-method="delete" href="/logout">Logout</a><br>
+
+<h3>Hi <%= @user.first_name %> </h3>
+
+<h4>All Products</h4>
+<% if @shoes_for_sale %>
+<table>
+		<tr>
+			<th>Product</th>
+			<th>Seller</th>
+			<th>Date Posted</th>
+			<th>Amount</th>
+			<th>Action</th>
+		</tr>
+		<% @shoes_for_sale.each do |shoe| %>
+		<tr>
+			<td><%= shoe.name %></td>
+			<td><%= shoe.seller.first_name %> <%= shoe.seller.last_name %></td>
+			<td><%= shoe.created_at %></td>
+			<td>&#36;<%= shoe.amount %></td>
+			<td><a data-method="put" href="/shoes/<%= shoe.id %>">Buy</a></td>
+		</tr>
+		<% end %>
+</table>
+<% end %>

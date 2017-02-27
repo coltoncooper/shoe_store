@@ -1,0 +1,91 @@
+<% content_for(:title, "Your Dashboard") %>
+<a href="/shoes">Go to All Products</a>  <a data-method="delete" href="/logout">Logout</a><br>
+
+<h3>Hi <%= @user.first_name %> </h3>
+
+<h4>Sell Product</h4>
+<form action="/shoes" method="post">
+	<input type="hidden" name="authenticity_token" value='<%= form_authenticity_token %>'> 
+	<p>
+		<label>Name</label>
+		<input type="text" name="shoe[name]">
+	</p>
+	<p>
+		<label>Amount</label>
+		<input type="text" name="shoe[amount]">
+	</p>
+	<input type="submit" value="Sell">
+</form>
+<% if flash[:messages] %>
+	<% flash[:messages].each do |message| %>
+			<p><%= message %></p>
+	<% end %>
+<% end %>
+
+
+<% if @shoes_not_yet_sold %>
+<h4>Your products that are not yet sold:</h4>
+<table>
+		<tr>
+			<th>Product</th>
+			<th>Date Posted</th>
+			<th>Amount</th>
+			<th>Action</th>
+		</tr>
+		<% @shoes_not_yet_sold.each do |shoe| %>
+		<tr>
+			<td><%= shoe.name %></td>
+			<td><%= shoe.created_at %></td>
+			<td>&#36;<%= shoe.amount %></td>
+			<td><a data-method="delete" href="/shoes/<%= shoe.id %>">Remove</a></td>
+		</tr>
+		<% end %>
+</table>
+<% end %>
+
+<% if @shoes_sold %>
+<h4>Sales</h4>
+<table>
+		<tr>
+			<th>Product</th>
+			<th>Date Bought</th>
+			<th>Buyer</th>
+			<th>Amount</th>
+		</tr>
+		<% @shoes_sold.each do |shoe| %>
+		<tr>
+			<td><%= shoe.name %></td>
+			<td><%= shoe.updated_at %></td>
+			<td><%= shoe.buyer.first_name %> <%= shoe.buyer.last_name %></td>
+			<td>&#36;<%= shoe.amount %></td>
+		</tr>
+		<% end %>
+</table>
+Total: &#36;<%= @total_sales %>
+<% end %>
+
+<% if @shoes_purchased %>
+<h4>Purchases</h4>
+<table>
+		<tr>
+			<th>Product</th>
+			<th>Date Bought</th>
+			<th>Seller</th>
+			<th>Amount</th>
+		</tr>
+		<% @shoes_purchased.each do |shoe| %>
+		<tr>
+			<td><%= shoe.name %></td>
+			<td><%= shoe.updated_at %></td>
+			<td><%= shoe.seller.first_name %> <%= shoe.seller.last_name %></td>
+			<td>&#36;<%= shoe.amount %></td>
+		</tr>
+		<% end %>
+</table>
+Total: &#36;<%= @total_purchases %>
+<% end %>
+
+
+
+
+
